@@ -45,6 +45,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     // Affichage de la note
     override fun onClick(view: View) {
         if (view.tag != null) {
@@ -58,7 +62,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val intent = Intent(this, NoteDetailActivity::class.java)
         intent.putExtra(NoteDetailActivity.EXTRA_NOTE, note)
         intent.putExtra(NoteDetailActivity.EXTRA_NOTE_INDEX, noteIndex)
-        startActivity(intent)
+        startActivityForResult(intent, NoteDetailActivity.REQUEST_EDIT_NOTE)
     }
 
 }
