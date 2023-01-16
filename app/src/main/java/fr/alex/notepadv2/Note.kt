@@ -3,8 +3,9 @@ package fr.alex.notepadv2
 import android.os.Parcel
 import android.os.Parcelable
 
-data class Note(var title: String?, var text: String?) : Parcelable {
+data class Note(var title: String?, var text: String?, var filename: String?) : Parcelable, java.io.Serializable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readString()
     ) {
@@ -13,6 +14,7 @@ data class Note(var title: String?, var text: String?) : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(title)
         parcel.writeString(text)
+        parcel.writeString(filename)
     }
 
     override fun describeContents(): Int {
@@ -20,6 +22,7 @@ data class Note(var title: String?, var text: String?) : Parcelable {
     }
 
     companion object CREATOR : Parcelable.Creator<Note> {
+        private val serialVersionUid: Long = 42424242
         override fun createFromParcel(parcel: Parcel): Note {
             return Note(parcel)
         }
