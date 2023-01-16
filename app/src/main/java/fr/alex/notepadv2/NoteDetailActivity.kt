@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -67,15 +68,17 @@ class NoteDetailActivity : AppCompatActivity() {
 
     private fun showConfirmDeleteNoteDialog() {
 
-        val confirmDialog = ConfirmDeleteNoteDialogFragment(note.title!!)
+        val confirmFragment = ConfirmDeleteNoteDialogFragment(note.title!!)
         confirmFragment.listener = object: ConfirmDeleteNoteDialogFragment.ConfrimDeleteDialogListener {
             override fun onDialogPositiveClick() {
                 deleteNote()
             }
-            override fun onDialogNegativeClick() { }
+
+            override fun onDialogNegativeClick() {}
+
         }
 
-        confirmDialog.show(supportFragmentManager, "confirmDeleteDialog")
+        confirmFragment.show(supportFragmentManager, "confirmDeleteDialog")
 
     }
 
@@ -84,7 +87,7 @@ class NoteDetailActivity : AppCompatActivity() {
         note.text = textView.text.toString()
 
         intent = Intent(ACTION_SAVE_NOTE)
-        intent.putExtra(EXTRA_NOTE, note)
+        intent.putExtra(EXTRA_NOTE, note as Parcelable)
         intent.putExtra(EXTRA_NOTE_INDEX, noteIndex)
         setResult(Activity.RESULT_OK, intent)
         finish()

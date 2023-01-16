@@ -4,11 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import fr.alex.notepadv2.utils.loadNotes
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -23,9 +26,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
-        findViewById<Button>(R.id.create_note_fab).setOnClickListener(this)
+        findViewById<FloatingActionButton>(R.id.create_note_fab).setOnClickListener(this)
 
-        notes = mutableListOf<Note>()
+        notes = loadNotes(this)
         adapter = NoteAdapter(notes, this)
 
         val recyclerView = findViewById(R.id.notes_recycler_view) as RecyclerView
@@ -87,6 +90,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             return
         }
         val note = notes.removeAt(noteIndex)
+        fr.alex.notepadv2.utils.deleteNote(this, note)
         adapter.notifyDataSetChanged()
     }
 
@@ -95,10 +99,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun showNoteDetail(noteIndex: Int) {
-        val note = if (noteIndex < 0) Note() else notes[noteIndex]
+        val note = if (noteIndex < 0) Note else notes[noteIndex]
 
         val intent = Intent(this, NoteDetailActivity::class.java)
-        intent.putExtra(NoteDetailActivity.EXTRA_NOTE, note)
+        intent.putExtra(NoteDetailActivity.EXTRA_NOTE, note as Parcelable)
         intent.putExtra(NoteDetailActivity.EXTRA_NOTE_INDEX, noteIndex)
         startActivityForResult(intent, NoteDetailActivity.REQUEST_EDIT_NOTE)
     }

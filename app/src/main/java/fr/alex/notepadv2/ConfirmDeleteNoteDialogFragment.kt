@@ -18,7 +18,7 @@ class ConfirmDeleteNoteDialogFragment(val noteTitle : String = "") : DialogFragm
         fun onDialogNegativeClick()
     }
 
-    val listener: ConfrimDeleteDialogListener? = null
+    var listener: ConfrimDeleteDialogListener? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
